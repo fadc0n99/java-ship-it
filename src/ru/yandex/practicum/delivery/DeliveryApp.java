@@ -7,7 +7,8 @@ import java.util.Scanner;
 public class DeliveryApp {
 
     private static final Scanner scanner = new Scanner(System.in);
-    private static List<Parcel> allParcels = new ArrayList<>();
+    private static final List<Parcel> allParcels = new ArrayList<>();
+    private static final List<Trackable> trackableParcels = new ArrayList<>();
 
     public static void main(String[] args) {
         boolean running = true;
@@ -25,6 +26,9 @@ public class DeliveryApp {
                 case 3:
                     calculateCosts();
                     break;
+                case 4:
+                    reportParcels();
+                    break;
                 case 0:
                     running = false;
                     break;
@@ -39,13 +43,11 @@ public class DeliveryApp {
         System.out.println("1 — Добавить посылку");
         System.out.println("2 — Отправить все посылки");
         System.out.println("3 — Посчитать стоимость доставки");
+        System.out.println("4 - Отправить статус о местоположении посылок");
         System.out.println("0 — Завершить");
     }
 
-    // реализуйте методы ниже
-
     private static void addParcel() {
-        // Подсказка: спросите тип посылки и необходимые поля, создайте объект и добавьте в allParcels
         System.out.println("Укажите тип посылки: 1 - Стандартная, 2 - Хрупкая, 3 - Скоропортящаяся");
         int type = Integer.parseInt(scanner.nextLine());
 
@@ -64,12 +66,17 @@ public class DeliveryApp {
 
             switch (type) {
                 case 1:
-                    StandardParcel standardParcel = new StandardParcel(description, weight, address, sendDay);
+                    StandardParcel standardParcel =
+                            new StandardParcel(description, weight, address, sendDay);
+
                     allParcels.add(standardParcel);
                     break;
                 case 2:
-                    FragileParcel fragileParcel = new FragileParcel(description, weight, address, sendDay);
+                    FragileParcel fragileParcel =
+                            new FragileParcel(description, weight, address, sendDay);
+
                     allParcels.add(fragileParcel);
+                    trackableParcels.add(fragileParcel);
                     break;
                 case 3:
                     System.out.println("Укажите срок годности посылки в днях");
@@ -103,6 +110,14 @@ public class DeliveryApp {
         }
 
         System.out.println("Общая стоимость посылок: " + totalCost);
+    }
+
+    private static void reportParcels() {
+        System.out.println("Введите местоположение посылок");
+        String status = scanner.nextLine();
+        for (Trackable trackableParcel : trackableParcels) {
+            trackableParcel.reportStatus(status);
+        }
     }
 
 }
