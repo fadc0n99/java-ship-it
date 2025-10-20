@@ -1,5 +1,7 @@
 package ru.yandex.practicum.delivery;
 
+import java.util.Objects;
+
 public abstract class Parcel {
     private final String description;
     private final double weight;
@@ -44,4 +46,27 @@ public abstract class Parcel {
     }
 
     abstract int getBaseCost();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Parcel parcel = (Parcel) o;
+        return Double.compare(weight, parcel.weight) == 0 && sendDay == parcel.sendDay && Objects.equals(description, parcel.description) && Objects.equals(deliveryAddress, parcel.deliveryAddress);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(description, weight, deliveryAddress, sendDay);
+    }
+
+    @Override
+    public String toString() {
+        return "Parcel{" +
+                "description='" + description + '\'' +
+                ", weight=" + weight +
+                ", deliveryAddress='" + deliveryAddress + '\'' +
+                ", sendDay=" + sendDay +
+                '}';
+    }
 }

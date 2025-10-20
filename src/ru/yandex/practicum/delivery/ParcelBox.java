@@ -25,7 +25,6 @@ public class ParcelBox<T extends Parcel> {
         if (currentBoxWeight + newParcel.getWeight() <= maxBoxWeight) {
             parcels.add(newParcel);
             currentBoxWeight += newParcel.getWeight();
-
         } else {
             System.out.println("Текущий вес коробки: " + currentBoxWeight +
                     ". Максимальный вес коробки: " + maxBoxWeight +

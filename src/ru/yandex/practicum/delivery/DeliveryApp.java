@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class DeliveryApp {
-
     private static final Scanner scanner = new Scanner(System.in);
     private static final List<Parcel> allParcels = new ArrayList<>();
     private static final List<Trackable> trackableParcels = new ArrayList<>();
+
     private static final ParcelBox<StandardParcel> standardParcels = new ParcelBox<>(200);
     private static final ParcelBox<FragileParcel> fragileParcels = new ParcelBox<>(200);
     private static final ParcelBox<PerishableParcel> perishableParcels = new ParcelBox<>(200);
@@ -71,21 +71,22 @@ public class DeliveryApp {
             System.out.println("Укажите день отправки посылки");
             int sendDay = Integer.parseInt(scanner.nextLine());
 
+            Parcel parcel;
             switch (type) {
                 case 1:
                     StandardParcel standardParcel =
                             new StandardParcel(description, weight, address, sendDay);
 
-                    allParcels.add(standardParcel);
                     standardParcels.addParcel(standardParcel);
+                    parcel = standardParcel;
                     break;
                 case 2:
                     FragileParcel fragileParcel =
                             new FragileParcel(description, weight, address, sendDay);
 
-                    allParcels.add(fragileParcel);
                     fragileParcels.addParcel(fragileParcel);
                     trackableParcels.add(fragileParcel);
+                    parcel = fragileParcel;
                     break;
                 case 3:
                     System.out.println("Укажите срок годности посылки в днях");
@@ -94,10 +95,16 @@ public class DeliveryApp {
                     PerishableParcel perishableParcel = new PerishableParcel(
                             description, weight, address, sendDay, timeToLive);
 
-                    allParcels.add(perishableParcel);
                     perishableParcels.addParcel(perishableParcel);
+                    parcel = perishableParcel;
                     break;
+                default:
+                    System.out.println("Такого типа посылки не существует.");
+                    return;
             }
+
+            allParcels.add(parcel);
+
         } else {
             System.out.println("Такого типа посылки не существует!");
         }
@@ -105,7 +112,6 @@ public class DeliveryApp {
     }
 
     private static void sendParcels() {
-        // Пройти по allParcels, вызвать packageItem() и deliver()
         for (Parcel parcel : allParcels) {
             parcel.packageItem();
             parcel.deliver();
@@ -113,8 +119,8 @@ public class DeliveryApp {
     }
 
     private static void calculateCosts() {
-        // Посчитать общую стоимость всех доставок и вывести на экран
         double totalCost = 0;
+
         for (Parcel parcel : allParcels) {
             totalCost += parcel.calculateDeliveryCost();
         }
@@ -125,6 +131,7 @@ public class DeliveryApp {
     private static void reportParcels() {
         System.out.println("Введите местоположение посылок");
         String status = scanner.nextLine();
+
         for (Trackable trackableParcel : trackableParcels) {
             trackableParcel.reportStatus(status);
         }
