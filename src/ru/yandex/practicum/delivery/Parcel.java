@@ -8,7 +8,7 @@ public abstract class Parcel {
     private final String deliveryAddress;
     private final int sendDay;
 
-    protected Parcel(String description, double weight,
+    public Parcel(String description, double weight,
                      String deliveryAddress, int sendDay) {
         this.description = description;
         this.weight = weight;

@@ -10,7 +10,6 @@ public class ParcelBox<T extends Parcel> {
 
     public ParcelBox(double maxBoxWeight) {
         this.maxBoxWeight = maxBoxWeight;
-        this.currentBoxWeight = 0;
     }
 
     public double getMaxBoxWeight() {
